@@ -22,7 +22,8 @@ class ProductsViewModel @Inject constructor(
 
     private var pageToLoad = 0
     private var totalPageCount = 0
-    private var isLastPage = false;
+    private var isLastPage = false
+    private var productsList = mutableListOf<ProductsModel>()
 
     fun getNextProducts() {
         pageToLoad++
@@ -34,9 +35,9 @@ class ProductsViewModel @Inject constructor(
                     is NetworkResult.Success -> {
                         val data = networkResult.data
                         totalPageCount = data.total
-                        isLastPage =
-                            (data.skip + data.limit) == totalPageCount // number of skipped items + number of current items is equal to total items, then we are at the last page
-                        _productsResult.value = ProductsResult.Success(data.products)
+                        isLastPage = (data.skip + data.limit) == totalPageCount // number of skipped items + number of current items is equal to total items, then we are at the last page
+                        productsList.addAll(networkResult.data.products)
+                        _productsResult.value = ProductsResult.Success(productsList)
                     }
                     is NetworkResult.Loading -> _productsResult.value = ProductsResult.Loading
                 }

@@ -18,7 +18,6 @@ class ProductsAdapter :
     ListAdapter<ProductsModel, ProductsAdapter.ProductsVH>(DiffCallback()) {
 
     private var listener: ((ProductsModel) -> Unit)? = null
-    private var products = mutableListOf<ProductsModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsVH {
         return ProductsVH(
@@ -30,18 +29,18 @@ class ProductsAdapter :
     }
 
     override fun onBindViewHolder(holder: ProductsVH, position: Int) {
-        holder.bind(products[position])
+        holder.bind(currentList[position])
     }
 
     override fun getItemCount(): Int {
-        return products.size
+        return currentList.size
     }
 
-    fun addAll(productList: List<ProductsModel>) {
-        val lastItem = itemCount
-        products.addAll(productList)
-        notifyItemRangeInserted(lastItem + 1, products.size)
-    }
+//    fun addAll(productList: List<ProductsModel>) {
+//        val lastItem = itemCount
+//        products.addAll(productList)
+//        notifyItemRangeInserted(lastItem + 1, products.size)
+//    }
 
     fun setListener(listener: ((ProductsModel) -> Unit)) {
         this.listener = listener

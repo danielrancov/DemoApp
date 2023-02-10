@@ -44,7 +44,7 @@ class ProductsFragment : Fragment() {
                 is ProductsViewModel.ProductsResult.Loading -> {}
                 is ProductsViewModel.ProductsResult.Success -> {
                     isLoading = false
-                    adapter.addAll(result.products)
+                    adapter.submitList(result.products.toMutableList())
                 }
                 is ProductsViewModel.ProductsResult.Error -> {
                     isLoading = false
@@ -54,6 +54,11 @@ class ProductsFragment : Fragment() {
         }
 
         recyclerView.addOnScrollListener(setupListener(layoutManager))
+
+        adapter.setListener {
+            Toast.makeText(requireContext(), "You clicked on: ${it.title}", Toast.LENGTH_SHORT).show()
+            //TODO Here we can add navigation to the details page
+        }
     }
 
     private fun setupListener(layoutManager: LinearLayoutManager) =
